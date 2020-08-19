@@ -19,7 +19,7 @@ class Temporary extends CI_Controller {
 		}
 		$config['file_name'] = $filename.'.'.pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 		$config['upload_path'] = $path;
-		$config['allowed_types'] = 'jpg|png|pdf|doc|docx|msword|vnd.openxmlformats-officedocument.wordprocessingml.document|csv|xls|xlsx|vnd.openxmlformats-officedocument.spreadsheetml.sheet|vnd.ms-excel';
+		$config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx|msword|vnd.openxmlformats-officedocument.wordprocessingml.document|csv|xls|xlsx|vnd.openxmlformats-officedocument.spreadsheetml.sheet|vnd.ms-excel';
 		$config['overwrite'] = TRUE;
 		$this->load->library('upload', $config);
 		if(!$this->upload->do_upload('file'))
@@ -45,7 +45,7 @@ class Temporary extends CI_Controller {
 		}
 		$config['file_name'] = $filename.'.'.pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 		$config['upload_path'] = $path;
-		$config['allowed_types'] = 'jpg|png|pdf|doc|docx|msword|vnd.openxmlformats-officedocument.wordprocessingml.document';
+		$config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx|msword|vnd.openxmlformats-officedocument.wordprocessingml.document';
 		$config['overwrite'] = FALSE;
 		$this->load->library('upload', $config);
 		if(!$this->upload->do_upload('file'))

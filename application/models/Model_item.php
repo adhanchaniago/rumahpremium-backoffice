@@ -104,7 +104,7 @@ class Model_item extends CI_Model {
 			'item_code'			=> strip_tags($this->input->post('item_code')),
 			'title_item'		=> strip_tags($this->input->post('title_item')),
 			'title_url'			=> strip_tags(strtolower(url_title($this->input->post('title_item')))),
-			'price'				=> strip_tags(str_replace(".", "",$this->input->post('price'))),
+			'price'				=> str_replace(".","",$this->input->post('price')),
 			'type'   			=> strip_tags($this->input->post('type')),
 			'category'  		=> strip_tags($this->input->post('category')),
 			'category_url'		=> strip_tags(strtolower(url_title($this->input->post('category')))),
