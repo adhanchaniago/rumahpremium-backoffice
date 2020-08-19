@@ -12,6 +12,7 @@ class Model_item extends CI_Model {
 	private function list_item_api()
 	{
 		$this->db->from('item');
+		$this->db->join('user', 'user.id_user = item.item_created_by', 'left');		
 		$i = 0;
 		foreach ($this->column_search as $item)
 		{
@@ -82,6 +83,15 @@ class Model_item extends CI_Model {
 		$query = $this->db->get();
 		return $query->row();
 	}
+
+	public function item_image($id_item)
+	{
+		$this->db->select('image');
+		$this->db->from('item_image');
+		$this->db->where('id_item',$id_item);
+		$query = $this->db->get();
+		return $query->row();
+	}
 	/* -- #VIEW -- */
 
 	/*-- ACTION --*/
@@ -90,64 +100,107 @@ class Model_item extends CI_Model {
 		switch ($type)
 		{
 			case "create_manual":
-			if($this->input->post('product_discount') == 0)
-			{
-				$product_price_display = strip_tags(str_replace(".", "",$this->input->post('product_price_real')));
-			}
-			else
-			{
-				$product_price_real = strip_tags(str_replace(".", "",$this->input->post('product_price_real')));
-				$product_price_display = $product_price_real-(($product_price_real*$this->input->post('product_discount'))/100);	
-			}
 			$data = array(
-			'product_code'			=> strip_tags($this->input->post('product_code')),
-			'product_title'			=> strip_tags($this->input->post('product_title')),
-			'product_url'   		=> strip_tags(strtolower(url_title($this->input->post('product_title')))),
-			'product_sku'  			=> strip_tags($this->input->post('product_sku')),
-			'product_price_real'	=> strip_tags(str_replace(".", "",$this->input->post('product_price_real'))),
-			'product_price_display'	=> $product_price_display,
-			'product_price_cost'  	=> strip_tags(str_replace(".", "",$this->input->post('product_price_cost'))),
-			'product_discount'  	=> strip_tags($this->input->post('product_discount')),
-			'product_weight'  		=> strip_tags($this->input->post('product_weight')),
-			'product_height'  		=> strip_tags($this->input->post('product_height')),
-			'product_width'  		=> strip_tags($this->input->post('product_width')),
-			'product_length'  		=> strip_tags($this->input->post('product_length')),
-			'id_store'				=> store_detail(store_used())->id_store,
-			'product_created_by' 	=> member()->user_fullname
+			'item_code'			=> strip_tags($this->input->post('item_code')),
+			'title_item'		=> strip_tags($this->input->post('title_item')),
+			'title_url'			=> strip_tags(strtolower(url_title($this->input->post('title_item')))),
+			'price'				=> strip_tags(str_replace(".", "",$this->input->post('price'))),
+			'type'   			=> strip_tags($this->input->post('type')),
+			'category'  		=> strip_tags($this->input->post('category')),
+			'category_url'		=> strip_tags(strtolower(url_title($this->input->post('category')))),
+			'address'			=> strip_tags($this->input->post('address')),
+			'latitude'			=> strip_tags($this->input->post('latitude')),
+			'longitude'			=> strip_tags($this->input->post('longitude')),
+			'usia_bangunan'		=> strip_tags($this->input->post('usia_bangunan')),
+			'lantai'			=> strip_tags($this->input->post('lantai')),
+			'luas_bangunan'		=> strip_tags($this->input->post('luas_bangunan')),
+			'luas_tanah'		=> strip_tags($this->input->post('luas_tanah')),
+			'furnish'			=> strip_tags($this->input->post('furnish')),
+			'sertifikat'		=> strip_tags($this->input->post('sertifikat')),
+			'listrik'			=> strip_tags($this->input->post('listrik')),
+			'sumber_air'		=> strip_tags($this->input->post('sumber_air')),
+			'developer'			=> strip_tags($this->input->post('developer')),
+			'ac'				=> strip_tags($this->input->post('ac')),
+			'kolam_renang'		=> strip_tags($this->input->post('kolam_renang')),
+			'halaman'			=> strip_tags($this->input->post('halaman')),
+			'water_heater'		=> strip_tags($this->input->post('water_heater')),
+			'mesin_cuci'		=> strip_tags($this->input->post('mesin_cuci')),
+			'gym'				=> strip_tags($this->input->post('gym')),
+			'internet'			=> strip_tags($this->input->post('internet')),
+			'teras'				=> strip_tags($this->input->post('teras')),
+			'bathup'			=> strip_tags($this->input->post('bathup')),
+			'bedroom'  			=> strip_tags($this->input->post('bedroom')),
+			'bathroom'  		=> strip_tags($this->input->post('bathroom')),
+			'garage'  			=> strip_tags($this->input->post('garage')),
+			'item_created_by' 	=> member()->id_user
 			);
-			$this->db->insert('product',$data);
+			$this->db->insert('item',$data);
 			break;
 
 			case "create_csv":
 			for ($c=0; $c < count($value); $c++)
 			{
-				if($c != 0)
+				if($c > 2)
 				{
+					$foldercode = rand();
+					$image = rand().'.jpg';
+
 					$data = array(
-					'product_code'			=> rand(),
-					'product_title'			=> $value[$c][0],
-					'product_url'   		=> strtolower(url_title($value[$c][0])),
-					'product_sku'  			=> $value[$c][1],
-					'product_price_real'	=> $value[$c][4],
-					'product_price_display'	=> $value[$c][4],
-					'product_price_cost'  	=> $value[$c][5],
-					'product_discount'  	=> $value[$c][6],
-					'product_weight'  		=> $value[$c][7],
-					'product_height'  		=> $value[$c][8],
-					'product_width'  		=> $value[$c][9],
-					'product_length'  		=> $value[$c][10],
-					'id_store'				=> store_detail(store_used())->id_store,
-					'product_created_by' 	=> member()->user_fullname
+					'item_code'			=> $foldercode,
+					'title_item'		=> $value[$c][0],
+					'title_url'			=> strip_tags(strtolower(url_title($value[$c][0]))),
+					'price'				=> $value[$c][1],
+					'type'   			=> $value[$c][2],
+					'category'  		=> strip_tags($this->input->post('category')),
+					'category_url'		=> strip_tags(strtolower(url_title($this->input->post('category')))),
+					'address'			=> $value[$c][3],
+					'latitude'			=> $value[$c][4],
+					'longitude'			=> $value[$c][5],
+					'usia_bangunan'		=> $value[$c][6],
+					'lantai'			=> $value[$c][7],
+					'luas_bangunan'		=> $value[$c][8],
+					'luas_tanah'		=> $value[$c][9],
+					'furnish'			=> $value[$c][10],
+					'sertifikat'		=> $value[$c][11],
+					'listrik'			=> $value[$c][12],
+					'sumber_air'		=> $value[$c][13],
+					'developer'			=> $value[$c][14],
+					'ac'				=> $value[$c][15],
+					'kolam_renang'		=> $value[$c][16],
+					'halaman'			=> $value[$c][17],
+					'water_heater'		=> $value[$c][18],
+					'mesin_cuci'		=> $value[$c][19],
+					'gym'				=> $value[$c][20],
+					'internet'			=> $value[$c][21],
+					'teras'				=> $value[$c][22],
+					'bathup'			=> $value[$c][23],
+					'bedroom'  			=> $value[$c][24],
+					'bathroom'  		=> $value[$c][25],
+					'garage'  			=> $value[$c][26],
+					'item_created_by' 	=> member()->id_user
 					);
-					$this->db->insert('product',$data);
+					$this->db->insert('item',$data);
+					$data = array(
+					'id_item'				=> $this->db->insert_id(),
+					'image'					=> $image
+					);
+					$this->db->insert('item_image',$data);
+					$path = 'assets/item/'.$foldercode.'/temp';
+					if(!is_dir($path))
+					{
+						mkdir($path,0755,TRUE);
+						$file = 'assets/index.html';
+						$file_new = $path.'/index.html';
+						copy($value[$c][27],$path.'/'.$image);
+					}
 				}
 			}
 			break;
 
 			case "delete":
 			$array_id = explode(',',$this->input->post('array_id'));
-			$this->db->where_in('product_sku',$array_id);
-			$this->db->delete('product');
+			$this->db->where_in('id_item',$array_id);
+			$this->db->delete('item');
 			break;
 		}
 	}
@@ -158,33 +211,24 @@ class Model_item extends CI_Model {
 		copy($directory_image.'/temp/'.$image,$directory_image.'/'.$image);
 	}
 
-	public function assign_category($id_product,$id_category)
-	{
-		$data = array(
-		'id_product'	=> $id_product,
-		'id_category'   => $id_category
-		);
-		$this->db->insert('product_category',$data);
-	}
-
 	public function assign_image($id_product)
 	{
-		$image = explode(".",$this->input->post('product_photo'));
-		for ($x = 0; $x <= count($this->input->post('product_photo_total')); $x++)
+		$image = explode(".",$this->input->post('item_photo'));
+		for ($x = 0; $x <= count($this->input->post('item_photo_total')); $x++)
 		{
 			if($x == 0)
 			{
-				$image_product = $this->input->post('product_photo');
+				$image_item = $this->input->post('item_photo');
 			}
 			else
 			{
-				$image_product = $image[0].$x.'.'.$image[1];
+				$image_item = $image[0].$x.'.'.$image[1];
 			}
 			$data = array(
-			'image'	=> $image_product,
-			'id_product'	=> $id_product,
+			'image'			=> $image_item,
+			'id_item'		=> $id_product,
 			);
-			$this->db->insert('product_image',$data);
+			$this->db->insert('item_image',$data);
 		}
 	}
     /*-- #ACTION --*/

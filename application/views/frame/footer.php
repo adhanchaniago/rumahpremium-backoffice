@@ -24,12 +24,6 @@
     </div>
 </div>
 
-<div class="btn-group-fab" role="group" aria-label="FAB Menu">
-	<button type="button" class="btn btn-main btn-primary rounded-circle has-tooltip" data-placement="left" title="Menu"> <h3 class="os-icon os-icon-mail-07 mb-0"></h3> </button>
-	<button type="button" class="btn btn-sub btn-info rounded-circle has-tooltip" data-placement="left" title="Fullscreen"> <h4 class="os-icon os-icon-mail mb-0"></h4> </button>
-	<button type="button" class="btn btn-sub btn-danger rounded-circle has-tooltip" data-placement="left" title="Save"> <h4 class="os-icon os-icon-facebook mb-0"></h4> </button>
-</div>
-
 <!-- JS -->
 <script src="<?php echo base_url(); ?>js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url(); ?>js/popper.min.js"></script>
@@ -96,13 +90,6 @@ elseif($this->session->flashdata('success') != '')
 
 <!-- SELECT INPUT -->
 <script src="<?php echo base_url(); ?>plugins/select/select2.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.select-custom').select2({
-            placeholder: 'Pilih Kategori',
-        });
-    });
-</script>
 <!-- #SELECT INPUT -->
 
 <script src="<?php echo base_url(); ?>js/libraries.js"></script>

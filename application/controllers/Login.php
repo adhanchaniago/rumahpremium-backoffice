@@ -10,9 +10,16 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('frame/header');
-		$this->load->view('login/login-form');
-		$this->load->view('frame/footer');
+		if(!isset($this->session->userdata['rumahpremium_member']))
+		{		
+			$this->load->view('frame/header');
+			$this->load->view('login/login-form');
+			$this->load->view('frame/footer');
+		}
+		else
+		{
+			redirect('dashboard');
+		}
 	}
 
 	public function member()

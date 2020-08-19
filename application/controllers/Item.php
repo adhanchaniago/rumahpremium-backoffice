@@ -20,11 +20,11 @@ class Item extends CI_Controller {
 			$no++;
 			$row = array();
 			$row[] = $data->id_item;
-			$row[] = '<img src="'.site().'assets/item/'.$data->photoitem.'" width="70"><span class="dt-index d-none">'.base_url().'item/form/edit/'.$data->title_url.'<span>';
+			$row[] = '<img src="'.base_url().'assets/item/'.$data->item_code.'/temp/'.item_image($data->id_item)->image.'" width="70"><span class="dt-index d-none">'.base_url().'item/form/edit/'.$data->title_url.'/'.strtolower(url_title($data->category)).'<span>';
 			$row[] = $data->title_item;
 			$row[] = 'Rp '.number_format($data->price,0,'','.');
 			$row[] = $data->type;
-			$row[] = '<time class="timeago fontsize-small" datetime="'.$data->item_created_date.'" data-toggle="popover" data-content="'.dmy($data->item_created_date).' | '.date('H:i', strtotime($data->item_created_date)).' WIB" data-placement="top" data-trigger="hover"></time><br>oleh <strong>'.$data->item_created_by.'</strong>';
+			$row[] = '<time class="timeago fontsize-small" datetime="'.$data->item_created_date.'" data-toggle="popover" data-content="'.dmy($data->item_created_date).' | '.date('H:i', strtotime($data->item_created_date)).' WIB" data-placement="top" data-trigger="hover"></time><br>oleh <strong>'.$data->user_fullname.'</strong>';
 			if($data->item_created_date != $data->item_updated_date)
 			{
 				$row[] = '<time class="timeago fontsize-small" datetime="'.$data->item_updated_date.'" data-toggle="popover" data-content="'.dmy($data->item_updated_date).'</strong>';
@@ -60,11 +60,11 @@ class Item extends CI_Controller {
 		$this->load->view('frame/footer');
 	}
 
-	public function form($type,$value = NULL)
+	public function form($type,$value = NULL,$category)
 	{
 		$this->load->view('frame/header');
 		$this->load->view('frame/menu');
-		/*$data['category_list'] = $this->model_category->category_list();*/
+		$data['title'] = $category;
         if($type == 'create')
         {
         	if($value == 'manual')
@@ -78,7 +78,7 @@ class Item extends CI_Controller {
         }
         else if($type == 'edit')
         {
-        	$data['item_detail'] = $this->model_item->item_detail('title_url',$value);
+        	$data['item_detail'] = $this->model_item->item_detail('title_url',$value,$category);
         	$this->load->view('item/item-edit',$data);
         }
 		$this->load->view('frame/footer');
@@ -90,19 +90,10 @@ class Item extends CI_Controller {
     {
         if($type == 'create_manual')
         {
-			if($this->form_validation->run('product_create') == TRUE)
-			{
-				$this->model_item->action($type);
-				$category_code = $this->input->post('category_code');
-				$product = $this->model_item->product_detail('product_code',$this->input->post('product_code'));
-				for ($x = 0; $x < count($category_code); $x++)
-				{
-					$category = $this->model_category->category_detail('category_code',$category_code[$x]);
-					$this->model_item->assign_category($product->id_product,$category->id_category);
-				}
-				$this->model_item->assign_image($product->id_product);
-	        }
-	        redirect('product');
+			$this->model_item->action($type);
+			$item = $this->model_item->item_detail('item_code',$this->input->post('item_code'));
+			$this->model_item->assign_image($item->id_item);
+	        redirect('item/category/'.$this->input->post('category'));
         }
         else if($type == 'create_csv')
         {
@@ -116,12 +107,12 @@ class Item extends CI_Controller {
 				fclose($handle);
 				$this->model_item->action($type,$data);
 			}
-			redirect('product');
+			redirect('item/category/'.$this->input->post('category'));
         }
         else if($type == 'delete')
         {
         	$this->model_item->action('delete');
-        	redirect('product');
+        	redirect('item/category/'.$this->input->post('category'));
         }
     }
 	/*-- #ACTION --*/

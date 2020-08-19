@@ -85,39 +85,8 @@ $('.btn-login').click(function() {
 });
 /* == #LOGIN == */
 
-/* == PRODUCT == */
-$('.input-product').keyup(function(){
-    var maxsku = $('.input-sku').data('max');
-    if(($(this).val().length) <= maxsku)
-    {
-        $('.input-sku').val($(this).val());
-        $('.inputmax-sku').text($(this).val().length);
-    }
+/* == INPUT == */
+$('.select-custom').select2({
+    placeholder: 'Pilih',
 });
-
-$('.input-count-income').on('change keyup', function(e){
-    var product_price_real = ($('input[name="product_price_real"]').val()).split('.').join(''); 
-    var product_price_cost = ($('input[name="product_price_cost"]').val()).split('.').join('');
-    var total_income = product_price_real-product_price_cost;
-    if(total_income < 0)
-    {
-        $('.total-income strong').html('<span class="text-danger">Rp '+(total_income).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+'</span>');
-    }
-    else
-    {
-        $('.total-income strong').html('Rp '+(total_income).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-    }
-    count_discount($('.input-count-discount').val())
-});
-
-$('.input-count-discount').on('change keyup', function(e){
-    count_discount($(this).val());
-});
-
-function count_discount(discount)
-{
-    var product_price_real = ($('input[name="product_price_real"]').val()).split('.').join(''); 
-    var total_discount = product_price_real-(product_price_real*discount/100);
-    $('.total-discount strong').html('Rp '+(total_discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));    
-}
-/* == #PRODUCT == */
+/* == #INPUT == */

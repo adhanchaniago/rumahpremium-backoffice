@@ -39,7 +39,7 @@
             </li>
             <li class="sub-header"><span>Properti</span></li>
             <li class="selected has-sub-menu">
-                <a href="<?php echo site_url(); ?>">
+                <a href="#">
                     <div class="icon-w"><div class="os-icon os-icon-home"></div></div>
                     <span>Data Properti</span>
                 </a>
@@ -49,8 +49,8 @@
                     <div class="sub-menu-i">
                         <ul class="sub-menu">
                             <li><a href="<?php echo site_url(); ?>item/category/apartment">Apartment</a></li>
-                            <li><a href="<?php echo site_url(); ?>item/category/apartment">Rumah</a></li>
-                            <li><a href="<?php echo site_url(); ?>item/category/apartment">Komersial</a></li>
+                            <li><a href="<?php echo site_url(); ?>item/category/rumah">Rumah</a></li>
+                            <li><a href="<?php echo site_url(); ?>item/category/komersial">Komersial</a></li>
                         </ul>
                     </div>
                 </div>

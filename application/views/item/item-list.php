@@ -15,9 +15,9 @@
 						</a>
 
 						<div class="dropdown-menu fontsize-smallest" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="<?php echo site_url(); ?>product/form/create/manual">Tambahkan Manual</a>
+							<a class="dropdown-item" href="<?php echo site_url(); ?>item/form/create/manual/<?php echo $title; ?>">Tambahkan Manual</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url(); ?>product/form/create/excel">Unggah Excel</a>
+							<a class="dropdown-item" href="<?php echo site_url(); ?>item/form/create/excel/<?php echo $title; ?>">Unggah Excel</a>
 						</div>
 					</div>
 				</div>
@@ -42,12 +42,13 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-body text-center">
-							<img src="https://tokoadmin.tokotalk.com/images/empty_products.svg" width="250">
+							<!-- <img src="https://tokoadmin.tokotalk.com/images/empty_products.svg" width="250"> -->
 							<h6 class="py-2 mb-0">Hapus semua data yang dipilih?</h6>
 							<hr>
-							<?php echo form_open('product/action/delete'); ?>
+							<?php echo form_open('item/action/delete'); ?>
 								<input type="hidden" name="array_id">
 								<button type="button" class="btn btn-outline-asgsagas fontsize-small" data-dismiss="modal">Batalkan</button>
+								<input type="hidden" name="category" value="<?php echo $title; ?>">
 								<button class="btn btn-outline-danger fontsize-small">Hapus</button>
 							<?php echo form_close(); ?>
 						</div>
@@ -58,11 +59,15 @@
 	</div>
 	<?php else: ?>
 		<div class="text-center">
-			<img src="https://tokoadmin.tokotalk.com/images/empty_products.svg" width="400">
-			<h4>Kamu belum punya data produk</h4>
-			<a href="<?php echo site_url(); ?>product/form/create">
+			<h5>Anda belum punya data properti</h5>
+			<a href="<?php echo site_url(); ?>item/form/create/manual/<?php echo $title; ?>">
 				<button type="button" class="btn btn-outline-dark mr-3 mt-4">
-					<i class="os-icon os-icon-plus position-relative border-right mr-2 pr-2" style="top: 1px;"></i> Tambah Produk
+					<i class="os-icon os-icon-plus position-relative border-right mr-2 pr-2" style="top: 1px;"></i> Tambah Properti Manual
+				</button>
+			</a>
+			<a href="<?php echo site_url(); ?>item/form/create/excel/<?php echo $title; ?>">
+				<button type="button" class="btn btn-outline-dark mr-3 mt-4">
+					<i class="os-icon os-icon-plus position-relative border-right mr-2 pr-2" style="top: 1px;"></i> Tambah Properti Excel
 				</button>
 			</a>
 		</div>
