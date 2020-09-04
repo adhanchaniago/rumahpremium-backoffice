@@ -5,20 +5,24 @@ class Temporary extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('model_image');
     }
 
 	public function uploadfile($foldername,$foldercode,$filename)
 	{
-		$path = 'assets/'.$foldername.'/'.$foldercode.'/temp';
-		if(!is_dir($path))
+		$path = 'assets/'.$foldername.'/'.$foldercode;
+		if(!is_dir($path.'/temp'))
 		{
-			mkdir($path,0755,TRUE);
+			mkdir($path.'/temp',0755,TRUE);
+			mkdir($path.'/crop',0755,TRUE);
+			mkdir($path.'/thumb',0755,TRUE);
 			$file = 'assets/index.html';
-			$file_new = $path.'/index.html';
-			copy($file,$file_new);
+			copy($file,$path.'/temp/index.html');
+			copy($file,$path.'/crop/index.html');
+			copy($file,$path.'/thumb/index.html');
 		}
 		$config['file_name'] = $filename.'.'.pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-		$config['upload_path'] = $path;
+		$config['upload_path'] = $path.'/temp';
 		$config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx|msword|vnd.openxmlformats-officedocument.wordprocessingml.document|csv|xls|xlsx|vnd.openxmlformats-officedocument.spreadsheetml.sheet|vnd.ms-excel';
 		$config['overwrite'] = TRUE;
 		$this->load->library('upload', $config);
@@ -29,23 +33,32 @@ class Temporary extends CI_Controller {
 		}
 		else
 		{
+			$file = $_FILES['file']['tmp_name'];
+			list($width, $height) = getimagesize($file);
+
 			$data = array('upload_data' => $this->upload->data());
+        	$this->resize_image($foldercode,$filename.'.'.pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION),$width,$height);
 		}
 	}
 
-	public function uploadmultiplefile($foldername,$foldercode,$filename)
+	public function uploadmultiplefile($foldername,$foldercode)
 	{
-		$path = 'assets/'.$foldername.'/'.$foldercode.'/temp';
-		if(!is_dir($path))
+		$filename = $this->input->post('filename');
+		$path = 'assets/'.$foldername.'/'.$foldercode;
+		if(!is_dir($path.'/temp'))
 		{
-			mkdir($path,0755,TRUE);
+			mkdir($path.'/temp',0755,TRUE);
+			mkdir($path.'/crop',0755,TRUE);
+			mkdir($path.'/thumb',0755,TRUE);
 			$file = 'assets/index.html';
-			$file_new = $path.'/index.html';
-			copy($file,$file_new);
+			copy($file,$path.'/index.html');
+			copy($file,$path.'/temp/index.html');
+			copy($file,$path.'/crop/index.html');
+			copy($file,$path.'/thumb/index.html');
 		}
 		$config['file_name'] = $filename.'.'.pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-		$config['upload_path'] = $path;
-		$config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx|msword|vnd.openxmlformats-officedocument.wordprocessingml.document';
+		$config['upload_path'] = $path.'/temp';
+		$config['allowed_types'] = 'jpg|jpeg|application/x-jpg|application/jpg|png|pdf|doc|docx|msword|vnd.openxmlformats-officedocument.wordprocessingml.document';
 		$config['overwrite'] = FALSE;
 		$this->load->library('upload', $config);
 		if(!$this->upload->do_upload('file'))
@@ -56,12 +69,20 @@ class Temporary extends CI_Controller {
 		else
 		{
 			$data = array('upload_data' => $this->upload->data());
+			header('Content-Type: application/json');
+			$response = array(
+				'filename' => $filename,
+				'fileserver' => $filename.'.'.pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION)
+			);
+			echo json_encode($response);
 		}
 	}
 
 	public function removefiletemp()
 	{
 		unlink('assets/'.$this->input->post('type').'/'.$this->input->post('foldercode').'/temp/'.$this->input->post('file'));
+		unlink('assets/'.$this->input->post('type').'/'.$this->input->post('foldercode').'/crop/'.$this->input->post('file'));
+		unlink('assets/'.$this->input->post('type').'/'.$this->input->post('foldercode').'/thumb/'.$this->input->post('file'));
+		$this->model_image->image_remove('product',$this->input->post('file'));
 	}
-
 }

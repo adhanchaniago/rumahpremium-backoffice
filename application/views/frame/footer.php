@@ -92,6 +92,11 @@ elseif($this->session->flashdata('success') != '')
 <script src="<?php echo base_url(); ?>plugins/select/select2.min.js"></script>
 <!-- #SELECT INPUT -->
 
+<!-- TEXT EDITOR -->
+<script src="<?php echo base_url(); ?>plugins/text-editor/quill.js"></script>
+<script src="<?php echo base_url(); ?>plugins/text-editor/quill-module.js"></script>
+<!-- #TEXT EDITOR -->
+
 <script src="<?php echo base_url(); ?>js/libraries.js"></script>
 <script src="<?php echo base_url(); ?>js/main.js"></script>
 

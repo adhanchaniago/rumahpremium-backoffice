@@ -38,7 +38,7 @@
 								<h6 class="text-uppercase element-header"><strong>Foto Properti</strong></h6>
 								<p class="mb-4 text-muted fontsize-smaller">Foto produk yang dapat diunggah maksimal 6 foto dan berekstensi .jpg atau .png</p>
 								<hr>
-								<div class="dropzone upload-multiplefile hover-opacity text-center" data-foldername="item" data-code="<?php echo $item_code; ?>" data-iduser="<?php echo member()->id_user; ?>" data-accept="image/jpeg,image/png" data-size="30">
+								<div class="dropzone upload-multiplefile hover-opacity text-center" data-foldername="product" data-code="<?php echo $item_code; ?>" data-accept="image/jpeg,image/png" data-size="30" data-fileupload="">
 									<div class="dz-message">
 										<div class="p-1">
 											<h1 class="my-3"><i class="os-icon os-icon-image icon-upload"></i></h1>
@@ -48,9 +48,10 @@
 										</div>
 									</div>
 								</div>
-								<input type="hidden" class="form-control validate upload-file-item" data-validate="validation/required" name="item_photo" required>
-								<input type="hidden" class="form-control validate upload-filetotal-item" data-validate="validation/required" name="item_photo_total" required>
+								<div class="data-file-product"></div>
+								<input type="hidden" class="form-control upload-filetotal-product" name="product_photo_total" value="0">
 								<div class="invalid-feedback">Minimal 1 foto diunggah</div>
+								<input type="hidden" name="main_image">
 							</div>
 						</div>
 						<div class="card shadow mt-4">
@@ -80,6 +81,11 @@
 										<option value="Dijual">Dijual</option>
 										<option value="Disewakan">Disewakan</option>
 									</select>
+								</div>
+								<div class="form-group fontsize-smaller">
+									<label>Deskripsi Properti</label>
+									<div id="editor" style="min-height: 100px;"></div>
+									<input type="hidden" class="editor w-100" name="product_desc">
 								</div>
 							</div>
 						</div>

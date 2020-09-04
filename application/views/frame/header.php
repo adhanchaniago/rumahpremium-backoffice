@@ -38,6 +38,10 @@
 <link rel="stylesheet" href="<?php echo base_url(); ?>plugins/select/select2.css" />
 <!-- #SELECT INPUT -->
 
+<!-- TEXT EDITOR -->
+<link rel="stylesheet" href="<?php echo base_url(); ?>plugins/text-editor/quill.snow.css" />
+<!-- #TEXT EDITOR -->
+
 <!-- TABLE -->
 <link rel="stylesheet" href="<?php echo base_url(); ?>plugins/table/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>plugins/table/select.dataTables.min.css">
