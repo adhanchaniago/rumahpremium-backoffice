@@ -33,7 +33,7 @@
             <li class="sub-header"><span>Statistik</span></li>
             <li class="selected">
                 <a href="<?php echo site_url(); ?>">
-                    <div class="icon-w"><div class="os-icon os-icon-home"></div></div>
+                    <div class="icon-w"><div class="os-icon os-icon-donut-chart-1"></div></div>
                     <span>Dashboard</span>
                 </a>
             </li>
@@ -56,7 +56,7 @@
                 </div>
             </li>
             <li class="selected">
-                <a href="<?php echo site_url(); ?>">
+                <a href="<?php echo site_url(); ?>news">
                     <div class="icon-w"><div class="os-icon os-icon-newspaper"></div></div>
                     <span>Berita Properti</span>
                 </a>

@@ -48,7 +48,7 @@
 
 <!-- #TABLE -->
 
-<title>Ngide.id | Buat Toko Online Kamu Sendiri</title>
+<title>Rumah Premium | Admin</title>
 
 </head>
 <body style="background: #eff3f8;">

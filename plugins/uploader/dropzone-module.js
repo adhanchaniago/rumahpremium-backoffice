@@ -8,6 +8,8 @@ $('.upload-multiplefile').each(function()
     var iduser = $(this).data('iduser');
     var accept = $(this).data('accept');
     var size = $(this).data('size');
+    var fileupload = $(this).data('fileupload');
+    var fileupload = fileupload.split(",");
     var filetotal = 0;
     var mockFile;
     $(this).dropzone({
@@ -118,6 +120,50 @@ $('.upload-multiplefile').each(function()
                     $('.upload-filetotal-'+foldername).removeClass('valid');
                 }
             });
+            if(fileupload != '')
+            {
+                var filenameupload;
+
+                for (i = 0; i < fileupload.length; i++) {
+                    filenameupload = fileupload[i].substr(0,fileupload[i].lastIndexOf("."));
+                    mockFile = {name: fileupload[i], accepted: true};
+                    this.emit('addedfile', mockFile);
+                    if($("input[name='main_image']").val() == fileupload[i])
+                    {
+                        var check_main_button = 'd-none';
+                        var check_main_status = '';
+                    }
+                    else
+                    {
+                        var check_main_button = '';
+                        var check_main_status = 'd-none';
+                    }
+                    $(mockFile.previewTemplate).append('<button type="button" data-filenameupload="'+fileupload[i]+'" class="btn btn-sm btn-primary btn-image-main btn-block '+check_main_button+' mt-2" style="font-size: 0.75em;">Jadikan Foto Utama</button>');
+                    $(mockFile.previewTemplate).append('<div data-filenameupload="'+fileupload[i]+'" class="mt-2 status-image-main font-weight-bold '+check_main_status+'" style="font-size: 0.75em;">Foto Utama</div>');
+                    $(mockFile.previewTemplate).append('<span class="server-name d-none">'+filenameupload+'</span>');
+                    $(mockFile.previewTemplate).append('<span class="server-file d-none">'+fileupload[i]+'</span>');
+                    if(accept == 'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf')
+                    {
+                        var extension = fileupload[i].substr(fileupload[i].lastIndexOf(".") + 1);
+                        if(extension == 'doc' || extension == 'docx')
+                        {
+                            this.emit('thumbnail', mockFile,base_url+'img/icon/doc.png');
+                        }
+                        else
+                        {
+                            this.emit('thumbnail', mockFile,base_url+'img/icon/pdf.png');
+                        }
+                    }
+                    else
+                    {
+                        this.emit('thumbnail', mockFile,base_url+'assets/'+foldername+'/'+foldercode+'/crop/'+fileupload[i]);
+                    }
+                    this.emit('complete', mockFile);
+                    $(this.element).find('.dz-size').remove();
+                    this.files.push(mockFile);
+                }
+                main_photo();
+            }
         },
     });
 });

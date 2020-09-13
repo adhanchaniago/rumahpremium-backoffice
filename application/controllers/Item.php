@@ -7,6 +7,7 @@ class Item extends CI_Controller {
         parent::__construct();
         $this->load->model('model_category');
         $this->load->model('model_item');
+        $this->load->model('model_image');
     }
 
 	/* -- TABLE -- */
@@ -92,7 +93,11 @@ class Item extends CI_Controller {
         {
 			$this->model_item->action($type);
 			$item = $this->model_item->item_detail('item_code',$this->input->post('item_code'));
-			$this->model_item->assign_image($item->id_item);
+			if($this->input->post('item_photo_total') != 0)
+			{
+				$this->model_item->item_image_upload($item->id_item);
+				$this->model_image->image_manipulate('item',$this->input->post('item_code'),$this->input->post('image'));
+			}
 	        redirect('item/category/'.$this->input->post('category'));
         }
         else if($type == 'create_csv')

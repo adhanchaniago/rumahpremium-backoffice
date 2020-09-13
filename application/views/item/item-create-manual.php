@@ -2,7 +2,7 @@
 <?php $item_code = date('dmy').'-'.strtolower(random_string('alnum',3)); ?>
 
 <div class="col-10">
-	<?php echo form_open('item/action/create_manual',array('class'=>'product-validation','novalidate'=>'novalidate')); ?>
+	<?php echo form_open('item/action/create_manual',array('class'=>'item-validation','novalidate'=>'novalidate')); ?>
 	<div class="row">
 		<div class="py-3 w-100 position-fixed" style="background: #333; top: 0; z-index: 9999;">
 			<div class="row animate-left">
@@ -38,7 +38,7 @@
 								<h6 class="text-uppercase element-header"><strong>Foto Properti</strong></h6>
 								<p class="mb-4 text-muted fontsize-smaller">Foto produk yang dapat diunggah maksimal 6 foto dan berekstensi .jpg atau .png</p>
 								<hr>
-								<div class="dropzone upload-multiplefile hover-opacity text-center" data-foldername="product" data-code="<?php echo $item_code; ?>" data-accept="image/jpeg,image/png" data-size="30" data-fileupload="">
+								<div class="dropzone upload-multiplefile hover-opacity text-center" data-foldername="item" data-code="<?php echo $item_code; ?>" data-accept="image/jpeg,image/png" data-size="30" data-fileupload="">
 									<div class="dz-message">
 										<div class="p-1">
 											<h1 class="my-3"><i class="os-icon os-icon-image icon-upload"></i></h1>
@@ -48,8 +48,8 @@
 										</div>
 									</div>
 								</div>
-								<div class="data-file-product"></div>
-								<input type="hidden" class="form-control upload-filetotal-product" name="product_photo_total" value="0">
+								<div class="data-file-item"></div>
+								<input type="hidden" class="form-control upload-filetotal-item" name="item_photo_total" value="0">
 								<div class="invalid-feedback">Minimal 1 foto diunggah</div>
 								<input type="hidden" name="main_image">
 							</div>
@@ -85,7 +85,7 @@
 								<div class="form-group fontsize-smaller">
 									<label>Deskripsi Properti</label>
 									<div id="editor" style="min-height: 100px;"></div>
-									<input type="hidden" class="editor w-100" name="product_desc">
+									<input type="hidden" class="editor w-100" name="description">
 								</div>
 							</div>
 						</div>

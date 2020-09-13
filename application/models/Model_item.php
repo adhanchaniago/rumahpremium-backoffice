@@ -92,6 +92,17 @@ class Model_item extends CI_Model {
 		$query = $this->db->get();
 		return $query->row();
 	}
+
+	public function item_image_list($id_item)
+	{
+		$this->db->select('image');
+		$this->db->from('item_image');
+		$this->db->where('id_item',$id_item);
+		$this->db->order_by('main_image','DESC');
+		$query = $this->db->get();
+		$array = $query->result_array();
+		return array_column($array,'image');
+	}
 	/* -- #VIEW -- */
 
 	/*-- ACTION --*/
@@ -132,6 +143,7 @@ class Model_item extends CI_Model {
 			'bedroom'  			=> strip_tags($this->input->post('bedroom')),
 			'bathroom'  		=> strip_tags($this->input->post('bathroom')),
 			'garage'  			=> strip_tags($this->input->post('garage')),
+			'description'  		=> $this->input->post('description'),
 			'item_created_by' 	=> member()->id_user
 			);
 			$this->db->insert('item',$data);
@@ -205,31 +217,39 @@ class Model_item extends CI_Model {
 		}
 	}
 
-	public function upload_image($type,$type_code,$image)
+	public function item_image_upload($id_item)
 	{
-		$directory_image = 'assets/'.$type.'/'.$type_code;
-		copy($directory_image.'/temp/'.$image,$directory_image.'/'.$image);
-	}
+		$data = array(
+		'main_image'	=> 0
+		);		
+		$this->db->where('id_item',$id_item);
+		$this->db->where('main_image',1);
+		$this->db->update('item_image',$data);
 
-	public function assign_image($id_product)
-	{
-		$image = explode(".",$this->input->post('item_photo'));
-		for ($x = 0; $x <= count($this->input->post('item_photo_total')); $x++)
+		$image_photo = $this->input->post('image');
+		for ($x = 0; $x < count($image_photo); $x++)
 		{
-			if($x == 0)
+			if($image_photo[$x] == $this->input->post('main_image'))
 			{
-				$image_item = $this->input->post('item_photo');
+				$main_image = 1;
 			}
 			else
 			{
-				$image_item = $image[0].$x.'.'.$image[1];
+				$main_image = 0;
 			}
 			$data = array(
-			'image'			=> $image_item,
-			'id_item'		=> $id_product,
+			'image'			=> $image_photo[$x],
+			'id_item'		=> $id_item,
+			'main_image'	=> $main_image,
 			);
 			$this->db->insert('item_image',$data);
 		}
+
+		$data = array(
+		'main_image'	=> 1
+		);		
+		$this->db->where('image',$this->input->post('main_image'));
+		$this->db->update('item_image',$data);
 	}
     /*-- #ACTION --*/
 

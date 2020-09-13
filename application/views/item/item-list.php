@@ -42,7 +42,6 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-body text-center">
-							<!-- <img src="https://tokoadmin.tokotalk.com/images/empty_products.svg" width="250"> -->
 							<h6 class="py-2 mb-0">Hapus semua data yang dipilih?</h6>
 							<hr>
 							<?php echo form_open('item/action/delete'); ?>
